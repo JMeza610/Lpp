@@ -25,7 +25,7 @@ public class StreamTokenizer implements Tokenizer {
     final String skipRegEx = "(\\s+|//.*)"; // group 1
     final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 2
     final String numRegEx = "(0|[1-9][0-9]*)"; // group 3
-    final String symbolRegEx = "\\+|\\*|==|=|\\(|\\)|\\[|\\]|;|,|\\{|\\}|-|!|&&";
+    final String symbolRegEx = "\\+|\\*|==|=|\\(|\\)|\\[|\\]|;|,|\\{|\\}|-|!|&&|\\^||\\#||\\\\/|/\\\\";
     regEx = skipRegEx + "|" + identRegEx + "|" + numRegEx + "|" + symbolRegEx;
   }
 
@@ -38,6 +38,8 @@ public class StreamTokenizer implements Tokenizer {
     keywords.put("else", ELSE);
     keywords.put("fst", FST);
     keywords.put("snd", SND);
+    keywords.put("while", WHILE);
+    keywords.put("in", IN);
   }
 
   static {
@@ -56,6 +58,10 @@ public class StreamTokenizer implements Tokenizer {
     symbols.put("!", NOT);
     symbols.put("&&", AND);
     symbols.put("==", EQ);
+    symbols.put("#", DIM);
+    symbols.put("^", CAT);
+    symbols.put("\\/", UNION);
+    symbols.put("/\\", INTERSECT);
   }
 
   public StreamTokenizer(Reader reader) {
