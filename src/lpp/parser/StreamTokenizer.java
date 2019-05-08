@@ -70,6 +70,20 @@ public class StreamTokenizer implements Tokenizer {
     scanner = new StreamScanner(regEx, reader);
   }
 
+  /**
+   * Reads tokenString which contains a number in either
+   * decimal or hexadecimal form.
+   *
+   * @return The corresponding value
+   */
+  private int parseTokenString() {
+    if (tokenString.length() >= 2) {
+      if (tokenString.substring(0, 2).equals("0x") || tokenString.substring(0, 2).equals("0X"))
+        return Integer.parseInt(tokenString, 2, tokenString.length(), 16);
+    }
+    return Integer.parseInt(tokenString);
+  }
+
   private void checkType() {
     tokenString = scanner.group();
     if (scanner.group(IDENT.ordinal()) != null) { // IDENT or BOOL or a keyword
@@ -82,7 +96,7 @@ public class StreamTokenizer implements Tokenizer {
     }
     if (scanner.group(NUM.ordinal()) != null) { // NUM
       tokenType = NUM;
-      intValue = Integer.parseInt(tokenString);
+      intValue = parseTokenString();
       return;
     }
     if (scanner.group(SKIP.ordinal()) != null) { // SKIP
