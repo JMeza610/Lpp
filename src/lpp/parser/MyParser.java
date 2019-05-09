@@ -82,6 +82,8 @@ public class MyParser implements Parser {
         return parseAssignStmt();
       case IF:
         return parseIfStmt();
+      case WHILE:
+        return parseWhileStmt();
     }
   }
 
@@ -101,6 +103,14 @@ public class MyParser implements Parser {
     Ident ident = parseIdent();
     consume(ASSIGN);
     return new AssignStmt(ident, parseExp());
+  }
+
+  private WhileStmt parseWhileStmt() throws ParserException {
+    consume(WHILE);
+    consume(OPEN_PAR);
+    Exp exp = parseExp();
+    consume(CLOSE_PAR);
+    return new WhileStmt(exp, parseBlock());
   }
 
   private IfStmt parseIfStmt() throws ParserException {
