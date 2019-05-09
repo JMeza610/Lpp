@@ -18,7 +18,7 @@ Prog ::= StmtSeq 'EOF'
  Cat ::= Add ('^' Add)*
  Add ::= Mul ('+' Mul)*
  Mul::= Atom ('*' Atom)*
- Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | '(' Exp ')' | '{' ExpSeq '}' | '#' Exp
+ Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | '(' Exp ')' | '{' ExpSeq '}' | '#' Atom
 */
 
 public class MyParser implements Parser {
@@ -143,10 +143,46 @@ public class MyParser implements Parser {
   }
 
   private Exp parseEq() throws ParserException {
-    Exp exp = parseAdd();
+    Exp exp = parseIn();
     while (tokenizer.tokenType() == EQ) {
       tryNext();
-      exp = new Eq(exp, parseAdd());
+      exp = new Eq(exp, parseIn());
+    }
+    return exp;
+  }
+
+  private Exp parseIn() throws ParserException {
+    Exp exp = parseUnion();
+    while (tokenizer.tokenType() == IN) {
+      tryNext();
+      exp = new In(exp, parseUnion());
+    }
+    return exp;
+  }
+
+  private Exp parseUnion() throws ParserException {
+    Exp exp = parseIntersect();
+    while (tokenizer.tokenType() == UNION) {
+      tryNext();
+      exp = new Union(exp, parseIntersect());
+    }
+    return exp;
+  }
+
+  private Exp parseIntersect() throws ParserException {
+    Exp exp = parseCat();
+    while (tokenizer.tokenType() == INTERSECT) {
+      tryNext();
+      exp = new Intersect(exp, parseCat());
+    }
+    return exp;
+  }
+
+  private Exp parseCat() throws ParserException {
+    Exp exp = parseAdd();
+    while (tokenizer.tokenType() == CAT) {
+      tryNext();
+      exp = new Cat(exp, parseAdd());
     }
     return exp;
   }
@@ -177,6 +213,8 @@ public class MyParser implements Parser {
         return parseNum();
       case IDENT:
         return parseIdent();
+      case STRING:
+        return parseString();
       case MINUS:
         return parseMinus();
       case OPEN_PAR:
@@ -191,8 +229,10 @@ public class MyParser implements Parser {
         return parseFst();
       case SND:
         return parseSnd();
-      case STRING:
-        return parseString();
+      case DIM:
+        return parseDim();
+      //case OPEN_BLOCK:
+      //return parseSetLit();
     }
   }
 
@@ -239,6 +279,16 @@ public class MyParser implements Parser {
     return new Not(parseAtom());
   }
 
+  private Dim parseDim() throws ParserException {
+    consume(DIM);
+    return new Dim(parseAtom());
+  }
+
+  /*
+    private SetLit() throws ParserException {
+      return null;
+    }
+  */
   private PairLit parsePairLit() throws ParserException {
     consume(OPEN_PAIR); // or tryNext();
     Exp left = parseExp();
