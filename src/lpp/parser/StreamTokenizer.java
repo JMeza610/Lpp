@@ -17,6 +17,7 @@ public class StreamTokenizer implements Tokenizer {
   private String tokenString;
   private int intValue;
   private boolean boolValue;
+  private String stringValue;
   private final Scanner scanner;
 
   static {
@@ -25,9 +26,9 @@ public class StreamTokenizer implements Tokenizer {
     final String skipRegEx = "(\\s+|//.*)"; // group 1
     final String identRegEx = "([a-zA-Z][a-zA-Z0-9]*)"; // group 2
     final String numRegEx = "((?:0[xX][0-9a-fA-F]+)|(?:0|[1-9][0-9]*))"; // group 3
-//  final String stringregEx = "(\"(?:[^\"\\\\]|\\\\[\"\\\\])*\")"; // group 4
-    final String symbolRegEx = "\\+|\\*|==|=|\\(|\\)|\\[|\\]|;|,|\\{|\\}|-|!|&&|\\^||\\#||\\\\/|/\\\\";
-    regEx = skipRegEx + "|" + identRegEx + "|" + numRegEx + "|" + symbolRegEx;
+    final String stringregEx = "(\"(?:[^\"\\\\]|\\\\[\"\\\\])*\")"; // group 4
+    final String symbolRegEx = "\\+|\\*|==|=|\\(|\\)|\\[|\\]|;|,|\\{|\\}|-|!|&&|\\^|\\#|\\\\/|/\\\\";
+    regEx = skipRegEx + "|" + identRegEx + "|" + numRegEx + "|" + stringregEx + "|" + symbolRegEx;
   }
 
   static {
@@ -39,6 +40,7 @@ public class StreamTokenizer implements Tokenizer {
     keywords.put("else", ELSE);
     keywords.put("fst", FST);
     keywords.put("snd", SND);
+    // new keywords
     keywords.put("while", WHILE);
     keywords.put("in", IN);
   }
@@ -84,6 +86,10 @@ public class StreamTokenizer implements Tokenizer {
     return Integer.parseInt(tokenString);
   }
 
+  private String parseStringValue() {
+    return tokenString.substring(1, tokenString.length() - 1);
+  }
+
   private void checkType() {
     tokenString = scanner.group();
     if (scanner.group(IDENT.ordinal()) != null) { // IDENT or BOOL or a keyword
@@ -92,6 +98,11 @@ public class StreamTokenizer implements Tokenizer {
         tokenType = IDENT;
       if (tokenType == BOOL)
         boolValue = Boolean.parseBoolean(tokenString);
+      return;
+    }
+    if (scanner.group(STRING.ordinal()) != null) {
+      tokenType = STRING;
+      stringValue = parseStringValue();
       return;
     }
     if (scanner.group(NUM.ordinal()) != null) { // NUM
@@ -173,5 +184,11 @@ public class StreamTokenizer implements Tokenizer {
     } catch (ScannerException e) {
       throw new TokenizerException(e);
     }
+  }
+
+  @Override
+  public String stringValue() {
+    checkValidToken(STRING);
+    return stringValue;
   }
 }

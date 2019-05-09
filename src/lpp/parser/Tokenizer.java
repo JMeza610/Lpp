@@ -16,4 +16,6 @@ public interface Tokenizer extends AutoCloseable {
 
   boolean boolValue();
 
+  String stringValue();
+
 }

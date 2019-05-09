@@ -8,12 +8,17 @@ import lpp.parser.ast.*;
 /*
 Prog ::= StmtSeq 'EOF'
  StmtSeq ::= Stmt (';' StmtSeq)?
- Stmt ::= 'let'? ID '=' Exp | 'print' Exp |  'if' '(' Exp ')' '{' StmtSeq '}' ('else' '{' StmtSeq '}')? 
- Exp ::= Eq ('&&' Eq)* 
- Eq ::= Add ('==' Add)*
+ Stmt ::= 'let'? ID '=' Exp | 'print' Exp |  'if' '(' Exp ')' '{' StmtSeq '}' ('else' '{' StmtSeq '}')? | 'while' '(' Exp ')' '{' StmtSeq '}'
+ ExpSeq ::= Exp (',' ExpSeq)?
+ Exp ::= Eq ('&&' Eq)*
+ Eq ::= In ('==' In)*
+ In ::= Union ('in' Union)*
+ Union ::= Intersect ('\/' Intersect)*
+ Intersect ::= Cat ('/\' Cat)*
+ Cat ::= Add ('^' Add)*
  Add ::= Mul ('+' Mul)*
  Mul::= Atom ('*' Atom)*
- Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | '(' Exp ')'
+ Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | '(' Exp ')' | '{' ExpSeq '}' | '#' Exp
 */
 
 public class MyParser implements Parser {
@@ -176,6 +181,8 @@ public class MyParser implements Parser {
         return parseFst();
       case SND:
         return parseSnd();
+      case STRING:
+        return parseString();
     }
   }
 
@@ -191,6 +198,11 @@ public class MyParser implements Parser {
     return new BoolLiteral(val);
   }
 
+  private StringLiteral parseString() throws ParserException {
+    String val = tokenizer.stringValue();
+    consume(STRING);
+    return new StringLiteral(val);
+  }
   private Ident parseIdent() throws ParserException {
     String name = tokenizer.tokenString();
     consume(IDENT); // or tryNext();

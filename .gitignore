@@ -28,3 +28,5 @@ hs_err_pid*
 .idea/
 *.iml
 
+# File used for testing
+src/lpp/Testing.java
