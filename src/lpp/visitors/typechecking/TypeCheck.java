@@ -2,11 +2,12 @@ package lpp.visitors.typechecking;
 
 import static lpp.visitors.typechecking.PrimtType.*;
 
-
 import lpp.environments.EnvironmentException;
 import lpp.environments.GenEnvironment;
 import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
+
+import java.util.Set;
 
 public class TypeCheck implements Visitor<Type> {
 
@@ -153,6 +154,8 @@ public class TypeCheck implements Visitor<Type> {
     //new visitors
     @Override
     public Type visitWhileStmt(Exp exp, Block block) {
+        BOOL.checkEqual(exp.accept(this));
+        block.accept(this);
         return null;
     }
 
@@ -173,12 +176,13 @@ public class TypeCheck implements Visitor<Type> {
 
     @Override
     public Type visitCat(Exp left, Exp right) {
-        return null;
+        checkBinOp(left, right, STRING);
+        return STRING;
     }
 
     @Override
     public Type visitString(String value) {
-        return null;
+        return STRING;
     }
 
     @Override
