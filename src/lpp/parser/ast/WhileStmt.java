@@ -14,6 +14,6 @@ public class WhileStmt implements Stmt {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitWhileStmt(exp, block);
   }
 }

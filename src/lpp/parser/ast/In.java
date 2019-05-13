@@ -10,6 +10,6 @@ public class In extends BinaryOp {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitIn(left, right);
   }
 }

@@ -10,6 +10,6 @@ public class StringLiteral extends PrimLiteral<String> {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitString(value);
   }
 }

@@ -46,4 +46,19 @@ public interface Visitor<T> {
   T visitFst(Exp exp);
 
   T visitSnd(Exp exp);
+
+  //new visitors
+  T visitWhileStmt(Exp exp, Block block);
+
+  T visitIn(Exp left, Exp right);
+
+  T visitUnion(Exp left, Exp right);
+
+  T visitIntersect(Exp left, Exp right);
+
+  T visitCat(Exp left, Exp right);
+
+  T visitString(String value);
+
+  T visitDim(Exp exp);
 }

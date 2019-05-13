@@ -10,6 +10,6 @@ public class Union extends BinaryOp {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitUnion(left, right);
   }
 }
