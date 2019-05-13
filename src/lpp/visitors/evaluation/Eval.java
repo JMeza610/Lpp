@@ -170,8 +170,9 @@ public class Eval implements Visitor<Value> {
     try (Tokenizer tokenizer = new StreamTokenizer(new InputStreamReader(System.in))) {
       Parser parser = new MyParser(tokenizer);
       Prog prog = parser.parseProg();
-      prog.accept(new TypeCheck());
-      prog.accept(new Eval());
+      //prog.accept(new TypeCheck());
+      //prog.accept(new Eval());
+      System.out.println(prog);
     } catch (TokenizerException e) {
       err.println("Tokenizer error: " + e.getMessage());
     } catch (ParserException e) {

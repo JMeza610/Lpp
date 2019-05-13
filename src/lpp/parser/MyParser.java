@@ -18,7 +18,7 @@ Prog ::= StmtSeq 'EOF'
  Cat ::= Add ('^' Add)*
  Add ::= Mul ('+' Mul)*
  Mul::= Atom ('*' Atom)*
- Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | '(' Exp ')' | '{' ExpSeq '}' | '#' Atom
+ Atom ::= '[' Exp ',' Exp ']' | 'fst' Atom | 'snd' Atom | '-' Atom | '!' Atom | BOOL | NUM | ID | STRING | '(' Exp ')' | '{' ExpSeq '}' | '#' Atom
 */
 
 public class MyParser implements Parser {
@@ -231,9 +231,25 @@ public class MyParser implements Parser {
         return parseSnd();
       case DIM:
         return parseDim();
-      //case OPEN_BLOCK:
-      //return parseSetLit();
+      case OPEN_BLOCK:
+        return parseSetLiteral();
     }
+  }
+
+  private Exp parseSetLiteral() throws ParserException {
+    consume(OPEN_BLOCK);
+    ExpSeq set = parseExpSeq();
+    consume(CLOSE_BLOCK);
+    return new SetLiteral(set);
+  }
+
+  private ExpSeq parseExpSeq() throws ParserException {
+    Exp exp = parseExp();
+    while (tokenizer.tokenType() == EXP_SEP) {
+      tryNext();
+      return new MoreExp(exp, parseExpSeq());
+    }
+    return new SingleExp(exp);
   }
 
   private IntLiteral parseNum() throws ParserException {
@@ -253,6 +269,7 @@ public class MyParser implements Parser {
     consume(STRING);
     return new StringLiteral(val);
   }
+
   private Ident parseIdent() throws ParserException {
     String name = tokenizer.tokenString();
     consume(IDENT); // or tryNext();
@@ -284,11 +301,6 @@ public class MyParser implements Parser {
     return new Dim(parseAtom());
   }
 
-  /*
-    private SetLit() throws ParserException {
-      return null;
-    }
-  */
   private PairLit parsePairLit() throws ParserException {
     consume(OPEN_PAIR); // or tryNext();
     Exp left = parseExp();
