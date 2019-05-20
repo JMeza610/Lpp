@@ -7,6 +7,21 @@ public interface Type {
     return this;
   }
 
+  default void checkStringOrSet() {
+    if (!equals(PrimtType.STRING) && !(this instanceof SetType))
+      throw new TypecheckerException("Found " + toString() + ", expected Set or String");
+  }
+
+  default void checkIsSetType() throws TypecheckerException {
+    if (!(this instanceof SetType))
+      throw new TypecheckerException(toString(), SetType.TYPE_NAME);
+  }
+
+  default Type getSetType() throws TypecheckerException {
+    checkIsSetType();
+    return ((SetType) this).getSet();
+  }
+
   default void checkIsPairType() throws TypecheckerException {
     if (!(this instanceof PairType))
       throw new TypecheckerException(toString(), PairType.TYPE_NAME);

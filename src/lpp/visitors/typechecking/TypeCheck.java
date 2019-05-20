@@ -159,17 +159,18 @@ public class TypeCheck implements Visitor<Type> {
 
   @Override
   public Type visitIn(Exp left, Exp right) {
-    return null;
+    left.accept(this).checkEqual(right.accept(this).getSetType());
+    return BOOL;
   }
 
   @Override
   public Type visitUnion(Exp left, Exp right) {
-    return null;
+    return left.accept(this).checkEqual(right.accept(this));
   }
 
   @Override
   public Type visitIntersect(Exp left, Exp right) {
-    return null;
+    return left.accept(this).checkEqual(right.accept(this));
   }
 
   @Override
@@ -185,7 +186,7 @@ public class TypeCheck implements Visitor<Type> {
 
   @Override
   public Type visitDim(Exp exp) {
-    exp.accept(this);
+    exp.accept(this).checkStringOrSet();
     return INT;
   }
 
@@ -201,8 +202,7 @@ public class TypeCheck implements Visitor<Type> {
 
   @Override
   public Type visitMoreExp(Exp first, ExpSeq rest) {
-
-    return null;
+    return first.accept(this).checkEqual(rest.accept(this));
   }
 
 }
