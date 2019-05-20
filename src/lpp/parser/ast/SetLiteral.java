@@ -17,6 +17,6 @@ public class SetLiteral implements Exp {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+      return visitor.visitSetLit(set);
   }
 }

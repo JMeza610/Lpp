@@ -187,7 +187,21 @@ public class TypeCheck implements Visitor<Type> {
 
     @Override
     public Type visitDim(Exp exp) {
+        exp.accept(this);
+        return INT;
+    }
+
+    @Override
+    public Type visitSetLit(ExpSeq set) {
+        return new SetType(set.accept(this));
+    }
+
+    @Override
+    public Type visitMoreExp(Exp first, ExpSeq rest) {
+        Type ft = first.accept(this);
+        ft.checkEqual(rest.accept(this));
         return null;
+        //return new SetType(first.accept(this), rest.accept(this));
     }
 
 }

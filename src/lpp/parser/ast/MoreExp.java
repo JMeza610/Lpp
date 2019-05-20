@@ -10,6 +10,6 @@ public class MoreExp extends More<Exp, ExpSeq> implements ExpSeq {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitMoreExp(first, rest);
   }
 }

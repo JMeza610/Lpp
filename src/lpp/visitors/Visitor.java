@@ -1,10 +1,6 @@
 package lpp.visitors;
 
-import lpp.parser.ast.Block;
-import lpp.parser.ast.Exp;
-import lpp.parser.ast.Ident;
-import lpp.parser.ast.Stmt;
-import lpp.parser.ast.StmtSeq;
+import lpp.parser.ast.*;
 
 public interface Visitor<T> {
   T visitAdd(Exp left, Exp right);
@@ -61,4 +57,8 @@ public interface Visitor<T> {
   T visitString(String value);
 
   T visitDim(Exp exp);
+
+    T visitSetLit(ExpSeq set);
+
+    T visitMoreExp(Exp first, ExpSeq rest);
 }

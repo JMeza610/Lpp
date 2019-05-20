@@ -11,12 +11,7 @@ import lpp.parser.ParserException;
 import lpp.parser.StreamTokenizer;
 import lpp.parser.Tokenizer;
 import lpp.parser.TokenizerException;
-import lpp.parser.ast.Block;
-import lpp.parser.ast.Exp;
-import lpp.parser.ast.Ident;
-import lpp.parser.ast.Prog;
-import lpp.parser.ast.Stmt;
-import lpp.parser.ast.StmtSeq;
+import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
 import lpp.visitors.typechecking.TypeCheck;
 import lpp.visitors.typechecking.TypecheckerException;
@@ -164,6 +159,51 @@ public class Eval implements Visitor<Value> {
   @Override
   public Value visitSnd(Exp exp) {
     return exp.accept(this).asPair().getSndVal();
+  }
+
+  @Override
+  public Value visitWhileStmt(Exp exp, Block block) {
+    return null;
+  }
+
+  @Override
+  public Value visitIn(Exp left, Exp right) {
+    return null;
+  }
+
+  @Override
+  public Value visitUnion(Exp left, Exp right) {
+    return null;
+  }
+
+  @Override
+  public Value visitIntersect(Exp left, Exp right) {
+    return null;
+  }
+
+  @Override
+  public Value visitCat(Exp left, Exp right) {
+    return null;
+  }
+
+  @Override
+  public Value visitString(String value) {
+    return null;
+  }
+
+  @Override
+  public Value visitDim(Exp exp) {
+    return null;
+  }
+
+  @Override
+  public Value visitSetLit(ExpSeq set) {
+    return null;
+  }
+
+  @Override
+  public Value visitMoreExp(Exp first, ExpSeq rest) {
+    return null;
   }
 
   public static void main(String[] args) {
