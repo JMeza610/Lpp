@@ -12,6 +12,23 @@ public class SetType implements Type {
 
     @Override
     public String toString() {
-        return set + "SET";
+        return set + " " + TYPE_NAME;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof SetType)) return false;
+        SetType st = (SetType) obj;
+        return set.equals(st.set);
+    }
+
+    @Override
+    public int hashCode() {
+        return set.hashCode() * 17;
+    }
+
+    public Type getSet() {
+        return set;
     }
 }
