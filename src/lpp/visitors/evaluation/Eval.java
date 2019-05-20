@@ -202,6 +202,11 @@ public class Eval implements Visitor<Value> {
   }
 
   @Override
+  public Value visitSingleExp(Exp exp) {
+    return null;
+  }
+
+  @Override
   public Value visitMoreExp(Exp first, ExpSeq rest) {
     return null;
   }

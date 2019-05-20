@@ -9,4 +9,9 @@ public class SetType implements Type {
     public SetType(Type set) {
         this.set = set;
     }
+
+    @Override
+    public String toString() {
+        return set + "SET";
+    }
 }

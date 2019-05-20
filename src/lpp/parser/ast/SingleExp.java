@@ -10,6 +10,7 @@ public class SingleExp extends Single<Exp> implements ExpSeq {
 
   @Override
   public <T> T accept(Visitor<T> visitor) {
-    return null;
+    return visitor.visitSingleExp(single);
   }
+
 }

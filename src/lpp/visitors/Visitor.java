@@ -58,7 +58,9 @@ public interface Visitor<T> {
 
   T visitDim(Exp exp);
 
-    T visitSetLit(ExpSeq set);
+  T visitSetLit(ExpSeq set);
 
-    T visitMoreExp(Exp first, ExpSeq rest);
+  T visitSingleExp(Exp exp);
+
+  T visitMoreExp(Exp first, ExpSeq rest);
 }
