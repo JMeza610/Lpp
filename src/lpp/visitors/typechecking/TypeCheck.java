@@ -7,8 +7,6 @@ import lpp.environments.GenEnvironment;
 import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
 
-import java.util.Set;
-
 public class TypeCheck implements Visitor<Type> {
 
     private final GenEnvironment<Type> env = new GenEnvironment<>();
