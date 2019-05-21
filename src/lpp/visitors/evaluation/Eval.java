@@ -2,6 +2,7 @@ package lpp.visitors.evaluation;
 
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.HashSet;
 
 import lpp.environments.EnvironmentException;
 import lpp.environments.GenEnvironment;
@@ -163,6 +164,8 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitWhileStmt(Exp exp, Block block) {
+    while (exp.accept(this).asBool())
+      block.accept(this);
     return null;
   }
 
@@ -183,7 +186,7 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitCat(Exp left, Exp right) {
-    return null;
+    return new StringValue(left.accept(this).asString().concat(right.accept(this).asString()));
   }
 
   @Override
@@ -193,21 +196,23 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitDim(Exp exp) {
-    return null;
+    // non basta, da finire
+    return new IntValue(exp.accept(this).asString().length());
   }
 
   @Override
   public Value visitSetLit(ExpSeq set) {
-    return null;
+    return new SetValue(set.accept(this));
   }
 
   @Override
   public Value visitSingleExp(Exp exp) {
-    return null;
+    return exp.accept(this);
   }
 
   @Override
   public Value visitMoreExp(Exp first, ExpSeq rest) {
+
     return null;
   }
 

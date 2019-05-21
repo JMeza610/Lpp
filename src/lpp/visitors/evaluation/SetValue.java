@@ -8,7 +8,7 @@ public class SetValue implements Value {
 
     public static final String TYPE_NAME = "SET";
 
-    public setValue(Value setVal) {
+    public SetValue(Value setVal) {
         this.setVal = requireNonNull(setVal);
     }
 

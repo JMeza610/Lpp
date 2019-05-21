@@ -17,4 +17,8 @@ public interface Value {
   default SetValue asSet() {
     throw new EvaluatorException("Expecting a set");
   }
+
+  default String asString() {
+    throw new EvaluatorException("Expecting a string");
+  }
 }

@@ -1,7 +1,5 @@
 package lpp.visitors.typechecking;
 
-import java.util.Set;
-
 public class SetType implements Type {
 
   private final Type set;
