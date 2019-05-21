@@ -13,4 +13,8 @@ public interface Value {
   default PairValue asPair() {
     throw new EvaluatorException("Expecting a pair");
   }
+
+  default SetValue asSet() {
+    throw new EvaluatorException("Expecting a set");
+  }
 }

@@ -186,7 +186,7 @@ public class TypeCheck implements Visitor<Type> {
 
   @Override
   public Type visitDim(Exp exp) {
-    exp.accept(this).checkStringOrSet();
+      exp.accept(this).checkStringOrSet();
     return INT;
   }
 

@@ -188,7 +188,7 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitString(String value) {
-    return null;
+      return new StringValue(value);
   }
 
   @Override
