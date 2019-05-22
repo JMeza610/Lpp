@@ -1,18 +1,21 @@
 package lpp.visitors.evaluation;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-public class HashSetValue implements Value, Iterable<Value> {
+public class SetValue implements Value {
 
   private HashSet<Value> set = new HashSet<>();
 
-  public HashSetValue(Value value) {
+  public SetValue(Value value) {
     set.add(value);
   }
 
-  public HashSetValue(Value value, Set moreValues) {
+  public SetValue(HashSet<Value> set) {
+    this.set.addAll(set);
+  }
+
+  public SetValue(Value value, Set<Value> moreValues) {
     this(value);
     set.addAll(moreValues);
   }
@@ -20,11 +23,6 @@ public class HashSetValue implements Value, Iterable<Value> {
   @Override
   public HashSet<Value> asSet() {
     return set;
-  }
-
-  @Override
-  public Iterator<Value> iterator() {
-    return this.set.iterator();
   }
 
   @Override
@@ -36,9 +34,9 @@ public class HashSetValue implements Value, Iterable<Value> {
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
-    if (!(obj instanceof HashSetValue))
+    if (!(obj instanceof SetValue))
       return false;
-    HashSetValue st = (HashSetValue) obj;
+    SetValue st = (SetValue) obj;
     return set.equals(st.set);
   }
 

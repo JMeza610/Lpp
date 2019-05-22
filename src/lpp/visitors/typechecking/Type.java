@@ -14,7 +14,7 @@ public interface Type {
    */
   default void checkStringOrSet() throws TypecheckerException {
     if (!equals(PrimtType.STRING) && !(this instanceof SetType))
-      throw new TypecheckerException("Found " + toString() + ", expected Set or String");
+      throw new TypecheckerException(toString(), "STRING or SET");
   }
 
   /**

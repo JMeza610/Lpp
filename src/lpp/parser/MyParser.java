@@ -1,9 +1,9 @@
 package lpp.parser;
 
+import lpp.parser.ast.*;
+
 import static java.util.Objects.requireNonNull;
 import static lpp.parser.TokenType.*;
-
-import lpp.parser.ast.*;
 
 /*
 Prog ::= StmtSeq 'EOF'
@@ -127,9 +127,9 @@ public class MyParser implements Parser {
   }
 
   private Block parseBlock() throws ParserException {
-    consume(OPEN_BLOCK);
+    consume(OPEN_BLOCK_OR_SET);
     StmtSeq stmts = parseStmtSeq();
-    consume(CLOSE_BLOCK);
+    consume(CLOSE_BLOCK_OR_SET);
     return new Block(stmts);
   }
 
@@ -231,15 +231,15 @@ public class MyParser implements Parser {
         return parseSnd();
       case DIM:
         return parseDim();
-      case OPEN_BLOCK:
+      case OPEN_BLOCK_OR_SET:
         return parseSetLiteral();
     }
   }
 
   private Exp parseSetLiteral() throws ParserException {
-    consume(OPEN_BLOCK);
+    consume(OPEN_BLOCK_OR_SET);
     ExpSeq set = parseExpSeq();
-    consume(CLOSE_BLOCK);
+    consume(CLOSE_BLOCK_OR_SET);
     return new SetLiteral(set);
   }
 

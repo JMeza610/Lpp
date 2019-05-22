@@ -1,21 +1,16 @@
 package lpp.visitors.evaluation;
 
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.HashSet;
-
 import lpp.environments.EnvironmentException;
 import lpp.environments.GenEnvironment;
-import lpp.parser.MyParser;
-import lpp.parser.Parser;
-import lpp.parser.ParserException;
-import lpp.parser.StreamTokenizer;
-import lpp.parser.Tokenizer;
-import lpp.parser.TokenizerException;
+import lpp.parser.*;
 import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
 import lpp.visitors.typechecking.TypeCheck;
 import lpp.visitors.typechecking.TypecheckerException;
+
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.HashSet;
 
 import static java.lang.System.err;
 import static java.util.Objects.requireNonNull;
@@ -186,17 +181,24 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitUnion(Exp left, Exp right) {
-    return null;
+    HashSet<Value> hashSet = new HashSet<>(left.accept(this).asSet());
+    hashSet.addAll(right.accept(this).asSet());
+    return new SetValue(hashSet);
   }
 
   @Override
   public Value visitIntersect(Exp left, Exp right) {
-    return null;
+    HashSet<Value> hashSet = new HashSet<>(left.accept(this).asSet());
+    hashSet.retainAll(right.accept(this).asSet());
+    return new SetValue(hashSet);
   }
 
   @Override
   public Value visitDim(Exp exp) {
-    return null;
+    Value val = exp.accept(this);
+    if (val instanceof SetValue)
+      return new IntValue(val.asSet().size());
+    return new IntValue(val.asString().length());
   }
 
   @Override
@@ -206,12 +208,12 @@ public class Eval implements Visitor<Value> {
 
   @Override
   public Value visitSingleExp(Exp exp) {
-    return new HashSetValue(exp.accept(this));
+    return new SetValue(exp.accept(this));
   }
 
   @Override
   public Value visitMoreExp(Exp first, ExpSeq rest) {
-    return new HashSetValue(first.accept(this), rest.accept(this).asSet());
+    return new SetValue(first.accept(this), rest.accept(this).asSet());
   }
 
   public static void main(String[] args) {

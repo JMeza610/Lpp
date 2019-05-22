@@ -1,11 +1,11 @@
 package lpp.visitors.typechecking;
 
-import static lpp.visitors.typechecking.PrimtType.*;
-
 import lpp.environments.EnvironmentException;
 import lpp.environments.GenEnvironment;
 import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
+
+import static lpp.visitors.typechecking.PrimtType.*;
 
 public class TypeCheck implements Visitor<Type> {
 
@@ -159,20 +159,26 @@ public class TypeCheck implements Visitor<Type> {
 
   @Override
   public Type visitIn(Exp left, Exp right) {
-    left.accept(this).checkEqual(right.accept(this).getSetType());
+    SetType leftSet = new SetType(left.accept(this));
+    Type rightType = right.accept(this);
+    leftSet.checkEqual(rightType);
     return BOOL;
   }
 
   @Override
   public Type visitUnion(Exp left, Exp right) {
-    left.accept(this).checkIsSetType();
-    return right.accept(this).checkIsSetType();
+    Type leftType = left.accept(this).checkIsSetType();
+    Type rightType = right.accept(this).checkIsSetType();
+    leftType.checkEqual(rightType);
+    return leftType; // it doesn't matter which one you return when they are the same type
   }
 
   @Override
   public Type visitIntersect(Exp left, Exp right) {
-    left.accept(this).checkIsSetType();
-    return right.accept(this).checkIsSetType();
+    Type leftType = left.accept(this).checkIsSetType();
+    Type rightType = right.accept(this).checkIsSetType();
+    leftType.checkEqual(rightType);
+    return leftType; // it doesn't matter which one you return when they are the same type
   }
 
   @Override

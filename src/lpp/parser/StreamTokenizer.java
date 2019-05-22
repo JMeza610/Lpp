@@ -1,10 +1,10 @@
 package lpp.parser;
 
-import static lpp.parser.TokenType.*;
-
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+
+import static lpp.parser.TokenType.*;
 
 public class StreamTokenizer implements Tokenizer {
   private static final String regEx;
@@ -55,8 +55,8 @@ public class StreamTokenizer implements Tokenizer {
     symbols.put("]", CLOSE_PAIR);
     symbols.put(";", STMT_SEP);
     symbols.put(",", EXP_SEP);
-    symbols.put("{", OPEN_BLOCK);
-    symbols.put("}", CLOSE_BLOCK);
+    symbols.put("{", OPEN_BLOCK_OR_SET);
+    symbols.put("}", CLOSE_BLOCK_OR_SET);
     symbols.put("-", MINUS);
     symbols.put("!", NOT);
     symbols.put("&&", AND);
