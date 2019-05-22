@@ -170,8 +170,18 @@ public class Eval implements Visitor<Value> {
   }
 
   @Override
+  public Value visitString(String value) {
+    return new StringValue(value);
+  }
+
+  @Override
+  public Value visitCat(Exp left, Exp right) {
+    return new StringValue(left.accept(this).asString().concat(right.accept(this).asString()));
+  }
+
+  @Override
   public Value visitIn(Exp left, Exp right) {
-    return null;
+    return new BoolValue(right.accept(this).asSet().contains(left.accept(this)));
   }
 
   @Override
@@ -185,35 +195,23 @@ public class Eval implements Visitor<Value> {
   }
 
   @Override
-  public Value visitCat(Exp left, Exp right) {
-    return new StringValue(left.accept(this).asString().concat(right.accept(this).asString()));
-  }
-
-  @Override
-  public Value visitString(String value) {
-      return new StringValue(value);
-  }
-
-  @Override
   public Value visitDim(Exp exp) {
-    // non basta, da finire
-    return new IntValue(exp.accept(this).asString().length());
+    return null;
   }
 
   @Override
   public Value visitSetLit(ExpSeq set) {
-    return new SetValue(set.accept(this));
+    return set.accept(this);
   }
 
   @Override
   public Value visitSingleExp(Exp exp) {
-    return exp.accept(this);
+    return new HashSetValue(exp.accept(this));
   }
 
   @Override
   public Value visitMoreExp(Exp first, ExpSeq rest) {
-
-    return null;
+    return new HashSetValue(first.accept(this), rest.accept(this).asSet());
   }
 
   public static void main(String[] args) {

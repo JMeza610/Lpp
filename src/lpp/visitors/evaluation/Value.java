@@ -1,5 +1,7 @@
 package lpp.visitors.evaluation;
 
+import java.util.Set;
+
 public interface Value {
   /* default conversion methods */
   default int asInt() {
@@ -14,11 +16,12 @@ public interface Value {
     throw new EvaluatorException("Expecting a pair");
   }
 
-  default SetValue asSet() {
+  default Set<Value> asSet() {
     throw new EvaluatorException("Expecting a set");
   }
 
   default String asString() {
     throw new EvaluatorException("Expecting a string");
   }
+
 }
