@@ -28,11 +28,10 @@ hs_err_pid*
 .idea/
 *.iml
 
-# File used for testing
-src/lpp/Testing.java
-
 # Project specification files
 *.pdf
 *.ml
 
 out/production/Lpp/META-INF/
+src/META-INF/*
+
