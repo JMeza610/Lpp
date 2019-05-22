@@ -2,17 +2,12 @@ package lpp.visitors.evaluation;
 
 import lpp.environments.EnvironmentException;
 import lpp.environments.GenEnvironment;
-import lpp.parser.*;
 import lpp.parser.ast.*;
 import lpp.visitors.Visitor;
-import lpp.visitors.typechecking.TypeCheck;
-import lpp.visitors.typechecking.TypecheckerException;
 
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashSet;
 
-import static java.lang.System.err;
 import static java.util.Objects.requireNonNull;
 
 public class Eval implements Visitor<Value> {
@@ -214,26 +209,6 @@ public class Eval implements Visitor<Value> {
   @Override
   public Value visitMoreExp(Exp first, ExpSeq rest) {
     return new SetValue(first.accept(this), rest.accept(this).asSet());
-  }
-
-  public static void main(String[] args) {
-    try (Tokenizer tokenizer = new StreamTokenizer(new InputStreamReader(System.in))) {
-      Parser parser = new MyParser(tokenizer);
-      Prog prog = parser.parseProg();
-      prog.accept(new TypeCheck());
-      prog.accept(new Eval());
-    } catch (TokenizerException e) {
-      err.println("Tokenizer error: " + e.getMessage());
-    } catch (ParserException e) {
-      err.println("Syntax error: " + e.getMessage());
-    } catch (TypecheckerException e) {
-      err.println("Static error: " + e.getMessage());
-    } catch (EvaluatorException e) {
-      err.println("Dynamic error: " + e.getMessage());
-    } catch (Throwable e) {
-      err.println("Unexpected error.");
-      e.printStackTrace();
-    }
   }
 
 }
