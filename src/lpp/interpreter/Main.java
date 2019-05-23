@@ -89,8 +89,8 @@ public class Main {
   private static PrintWriter tryOpenPW(String filename) {
     if (filename != null && !filename.equals("-i") && !filename.equals("-o")) {
       try {
-        return new PrintWriter(filename);
-      } catch (FileNotFoundException e) {
+        return new PrintWriter(new FileWriter(filename), true);
+      } catch (IOException e) {
         System.out.println("Cannot open " + filename + "\nUsing stdout");
       }
     }
