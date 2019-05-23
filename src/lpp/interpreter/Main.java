@@ -16,19 +16,19 @@ public class Main {
 
   private static String fileIn = null;
   private static String fileOut = null;
-  private static boolean ntc = false;
+  private static boolean typeChecking = true;
 
   public static void main(String[] args) {
 
     readArgs(args);
 
-    PrintWriter printWriter = tryOpenPW(fileOut);
     BufferedReader bufferedReader = tryOpenBR(fileIn);
+    PrintWriter printWriter = tryOpenPW(fileOut);
 
     try (Tokenizer tokenizer = new StreamTokenizer(bufferedReader)) {
       Parser parser = new MyParser(tokenizer);
       Prog prog = parser.parseProg();
-      if (!ntc) prog.accept(new TypeCheck());
+      if (typeChecking) prog.accept(new TypeCheck());
       prog.accept(new Eval(printWriter));
     } catch (TokenizerException e) {
       err.println("Tokenizer error: " + e.getMessage());
@@ -57,7 +57,7 @@ public class Main {
             fileOut = args[i + 1];
           break;
         case "-ntc":
-          ntc = true;
+          typeChecking = false;
           break;
       }
     }

@@ -1,6 +1,7 @@
 package lpp.visitors.evaluation;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class SetValue implements Value {
@@ -27,8 +28,21 @@ public class SetValue implements Value {
 
   @Override
   public String toString() {
-    return set.toString();
+    set.toString();
+    Iterator<Value> it = set.iterator();
+    if (!it.hasNext())
+      return "{ }";
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    while (it.hasNext()) {
+      sb.append(it.next());
+      if (!it.hasNext()) break;
+      sb.append(',').append(' ');
+    }
+    return sb.append('}').toString();
   }
+
 
   @Override
   public boolean equals(Object obj) {
