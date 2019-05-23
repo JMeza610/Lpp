@@ -33,7 +33,7 @@ public class SetValue implements Value {
       return "{ }";
 
     StringBuilder sb = new StringBuilder();
-    sb.append("{");
+    sb.append('{');
     while (it.hasNext()) {
       sb.append(it.next());
       if (!it.hasNext()) break;
