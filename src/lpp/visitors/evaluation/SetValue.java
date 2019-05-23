@@ -28,7 +28,6 @@ public class SetValue implements Value {
 
   @Override
   public String toString() {
-    set.toString();
     Iterator<Value> it = set.iterator();
     if (!it.hasNext())
       return "{ }";
