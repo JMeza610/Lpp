@@ -23,8 +23,8 @@ public class Eval implements Visitor<Value> {
     this.printWriter = requireNonNull(printWriter);
   }
 
-  // dynamic semantics for programs; no value returned by the visitor
 
+  // dynamic semantics for programs; no value returned by the visitor
   @Override
   public Value visitProg(StmtSeq stmtSeq) {
     try {
@@ -37,8 +37,8 @@ public class Eval implements Visitor<Value> {
     return null;
   }
 
-  // dynamic semantics for statements; no value returned by the visitor
 
+  // dynamic semantics for statements; no value returned by the visitor
   @Override
   public Value visitAssignStmt(Ident ident, Exp exp) {
     env.update(ident, exp.accept(this));
@@ -67,14 +67,21 @@ public class Eval implements Visitor<Value> {
   }
 
   @Override
+  public Value visitWhileStmt(Exp exp, Block block) {
+    while (exp.accept(this).asBool())
+      block.accept(this);
+    return null;
+  }
+
+  @Override
   public Value visitBlock(StmtSeq stmtSeq) {
     env.enterScope();
     stmtSeq.accept(this);
     env.exitScope();
     return null;
   }
-
   // dynamic semantics for sequences of statements
+
   // no value returned by the visitor
 
   @Override
@@ -153,13 +160,6 @@ public class Eval implements Visitor<Value> {
   }
 
   @Override
-  public Value visitWhileStmt(Exp exp, Block block) {
-    while (exp.accept(this).asBool())
-      block.accept(this);
-    return null;
-  }
-
-  @Override
   public Value visitString(String value) {
     return new StringValue(value);
   }
@@ -188,12 +188,19 @@ public class Eval implements Visitor<Value> {
     return new SetValue(hashSet);
   }
 
+  /**
+   * @param exp an expression
+   * @return A {@link IntValue} containing the size of the given exp.
+   * @throws EvaluatorException When skipping the type checker and exp is neither a String nor a Set
+   */
   @Override
-  public Value visitDim(Exp exp) {
+  public Value visitDim(Exp exp) throws EvaluatorException {
     Value val = exp.accept(this);
     if (val instanceof SetValue)
       return new IntValue(val.asSet().size());
-    return new IntValue(val.asString().length());
+    else if (val instanceof StringValue)
+      return new IntValue(val.asString().length());
+    else throw new EvaluatorException("Expecting either a set or a string");
   }
 
   @Override

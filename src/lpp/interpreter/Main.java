@@ -64,7 +64,6 @@ public class Main {
   }
 
   /**
-   * Tries opening the given file.
    *
    * @param filename Filename given by the user at launch.
    * @return A {@link BufferedReader} containing either the file or {@code System.out}.
@@ -81,7 +80,6 @@ public class Main {
   }
 
   /**
-   * Tries opening the given file.
    *
    * @param filename Filename given by the user at launch.
    * @return A {@link PrintWriter} containing either the file or {@code System.out}.

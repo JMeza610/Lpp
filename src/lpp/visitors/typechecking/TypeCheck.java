@@ -60,14 +60,21 @@ public class TypeCheck implements Visitor<Type> {
   }
 
   @Override
+  public Type visitWhileStmt(Exp exp, Block block) {
+    BOOL.checkEqual(exp.accept(this));
+    block.accept(this);
+    return null;
+  }
+
+  @Override
   public Type visitBlock(StmtSeq stmtSeq) {
     env.enterScope();
     stmtSeq.accept(this);
     env.exitScope();
     return null;
   }
-
   // static semantics for sequences of statements
+
   // no value returned by the visitor
 
   @Override
@@ -148,14 +155,7 @@ public class TypeCheck implements Visitor<Type> {
   public Type visitSnd(Exp exp) {
     return exp.accept(this).getSndPairType();
   }
-
   //new visitors
-  @Override
-  public Type visitWhileStmt(Exp exp, Block block) {
-    BOOL.checkEqual(exp.accept(this));
-    block.accept(this);
-    return null;
-  }
 
   @Override
   public Type visitIn(Exp left, Exp right) {
@@ -170,7 +170,7 @@ public class TypeCheck implements Visitor<Type> {
     Type leftType = left.accept(this).checkIsSetType();
     Type rightType = right.accept(this).checkIsSetType();
     leftType.checkEqual(rightType);
-    return leftType; // it doesn't matter which one you return when they are the same type
+    return leftType; // it doesn't matter which one you return as they are the same type
   }
 
   @Override
@@ -178,7 +178,7 @@ public class TypeCheck implements Visitor<Type> {
     Type leftType = left.accept(this).checkIsSetType();
     Type rightType = right.accept(this).checkIsSetType();
     leftType.checkEqual(rightType);
-    return leftType; // it doesn't matter which one you return when they are the same type
+    return leftType; // it doesn't matter which one you return as they are the same type
   }
 
   @Override

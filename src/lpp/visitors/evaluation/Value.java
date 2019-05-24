@@ -1,6 +1,6 @@
 package lpp.visitors.evaluation;
 
-import java.util.Set;
+import java.util.HashSet;
 
 public interface Value {
   /* default conversion methods */
@@ -16,7 +16,7 @@ public interface Value {
     throw new EvaluatorException("Expecting a pair");
   }
 
-  default Set<Value> asSet() {
+  default HashSet<Value> asSet() {
     throw new EvaluatorException("Expecting a set");
   }
 
