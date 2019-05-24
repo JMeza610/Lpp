@@ -87,7 +87,7 @@ public class StreamTokenizer implements Tokenizer {
   }
 
   private String parseStringValue() {
-    return tokenString.substring(1, tokenString.length() - 1);
+    return tokenString.substring(1, tokenString.length() - 1).replace("\\\"", "\"").replace("\\\\", "\\");
   }
 
   private void checkType() {
@@ -167,6 +167,12 @@ public class StreamTokenizer implements Tokenizer {
   }
 
   @Override
+  public String stringValue() {
+    checkValidToken(STRING);
+    return stringValue;
+  }
+
+  @Override
   public TokenType tokenType() {
     checkValidToken();
     return tokenType;
@@ -184,11 +190,5 @@ public class StreamTokenizer implements Tokenizer {
     } catch (ScannerException e) {
       throw new TokenizerException(e);
     }
-  }
-
-  @Override
-  public String stringValue() {
-    checkValidToken(STRING);
-    return stringValue;
   }
 }
