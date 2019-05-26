@@ -1,0 +1,12 @@
+print "test3";
+let a = {0};
+let c = [3, 2];
+let i = 0;
+while (!(i==10)) {
+   let d = i + fst c;
+   if (!(d in a)) {
+     a = a \/ {d * (- snd c)}
+   };
+   i = i + 1
+};
+print a

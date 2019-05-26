@@ -1,0 +1,5 @@
+print "test2";
+let a = ["Hello", {"World"}];
+if (fst a == "Hello" && "World" in snd a) {
+  print fst a ^ " World"
+}

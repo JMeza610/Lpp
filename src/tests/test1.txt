@@ -1,0 +1,4 @@
+print "test1";
+let a = "a"; let b = "b"; let s = {a} /\ {b};
+let c = {"\"" ^ a ^ "\""} \/ {"\"" ^ a ^ b ^ "\""};
+print a; print b; print s; print c

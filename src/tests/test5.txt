@@ -1,0 +1,14 @@
+let test = "test5";
+print test;
+let a = [[0, 1], [false, true]];
+let b = {2, 3, 5, 7, 11, 13, 17, 23, 29, 31};
+let c = b /\ {0};
+let  i = 10;
+while (!(i==20)) {
+  let d = snd (fst a) * #b + (-5);
+  if (d in b && snd (snd a)) {
+    c = c \/ {d + #test * 31}
+  };
+  i = i+1
+};
+print c
